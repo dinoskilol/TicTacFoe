@@ -1,0 +1,279 @@
+﻿@layout Layout.EmptyLayout
+@page "/"
+@using TicTacFoe.Models
+
+<div class="tic-tac-toe-container">
+    <div class="tic-tac-toe-grid">
+        @for (int i = 0; i < 3; i++)
+        {
+            <div class="tic-tac-toe-row">
+                @for (int j = 0; j < 3; j++)
+                {
+                    var row = i;
+                    var column = j;
+                    @if (board[row, column] == Player.None)
+                    {
+                        <div class="tic-tac-toe-cell" @onclick='() => ButtonClick(row, column)'>
+                            @if (gameOver == false)
+                            {
+                                <span class="currentPlayerMark">@currentPlayer</span>
+                            }
+                        </div>
+                    }
+                    else if (board[row, column] == winner)
+                    {
+                        <div class="winner-tic-tac-toe-cell" @onclick='() => ButtonClick(row, column)'>
+                            @DisplayMark(row, column)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="clicked-tic-tac-toe-cell" @onclick='() => ButtonClick(row, column)'>
+                            @DisplayMark(row, column)
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+<div class="bottomBarPosition">
+    <div class="bottomBar">
+        <button @onclick="RestartGame" class="restartButton">Restart</button> 
+        <span style="font-family: Segoe UI;">Turns: @turnCounter</span>
+    </div>
+</div>
+
+<style>
+    .restartButton {
+        height: 100%;
+        font-family: Segoe UI;
+        background-color: black;
+        color: white;
+        margin-right: 30%;
+    }
+    .bottomBarPosition {
+        position: absolute;
+        bottom: 0;
+    }
+
+    .bottomBar {
+        height: 50px;
+        width: 100vw;
+        background-color: black;
+        color: white;
+    }
+</style>
+
+@code {
+    // Game board
+    private Player[,] board = new Player[3, 3]
+    {
+        { Player.None, Player.None, Player.None },
+        { Player.None, Player.None, Player.None },
+        { Player.None, Player.None, Player.None }
+    };
+
+
+    // What mark will be applied on ButtonClick
+    private Player currentPlayer = Player.X;
+    // List of moves made
+    private List<(int row, int column)> moves = new();
+    // Game state
+    private bool gameOver = false;
+    private Player winner = Player.None;
+    // Stats
+    private int turnCounter = 0;
+
+    private void RestartGame()
+    {
+        gameOver = false;
+
+        board = new Player[3, 3]
+        {
+         { Player.None, Player.None, Player.None },
+         { Player.None, Player.None, Player.None },
+         { Player.None, Player.None, Player.None }
+        };
+        winner = Player.None;
+        currentPlayer = Player.X;
+        turnCounter = 0;
+        moves.Clear();
+    }
+
+    private void ButtonClick(int rowPosition, int columnPosition)
+    {
+        if (gameOver) return; // If the game is over, ignore further input.
+
+        // Checks if board spot is empty
+        if (board[rowPosition, columnPosition] == Player.None)
+        {
+            // Registers mark and adds move to list of moves
+            board[rowPosition, columnPosition] = currentPlayer;
+            moves.Add((rowPosition, columnPosition));
+
+            // Deletes the oldest move as soon as list is bigger than 5
+            if (moves.Count > 5)
+            {
+                var (oldRow, oldColumn) = moves[0];
+                board[oldRow, oldColumn] = Player.None;
+                moves.RemoveAt(0);
+            }
+
+            // Check if current move won the game
+            if (CheckForWin(currentPlayer))
+            {
+                gameOver = true;
+                winner = currentPlayer;
+            }
+            else
+            {
+                // Swaps the mark to be applied next ButtonClick
+                currentPlayer = currentPlayer == Player.X ? Player.O : Player.X;
+            }
+        }
+        StateHasChanged();
+    }
+
+
+    private bool CheckForWin(Player player)
+    {
+        turnCounter++;
+        // Check rows, columns, and diagonals
+        for (int i = 0; i < 3; i++)
+        {
+            // Check rows
+            if (board[i, 0] == player && board[i, 1] == player && board[i, 2] == player)
+                return true;
+            // Check columns
+            if (board[0, i] == player && board[1, i] == player && board[2, i] == player)
+                return true;
+        }
+
+        // Check diagonals
+        if (board[0, 0] == player && board[1, 1] == player && board[2, 2] == player)
+            return true;
+        if (board[0, 2] == player && board[1, 1] == player && board[2, 0] == player)
+            return true;
+
+        return false;
+    }
+
+    // Displays the mark inside of the board spot
+    private string DisplayMark(int rowPosition, int columnPosition)
+    {
+        return board[rowPosition, columnPosition] switch
+        {
+            Player.X => "X",
+            Player.O => "O",
+            _ => ""
+        };
+    }
+}
+
+
+<style>
+    @@font-face {
+    font-family: 'subway_tickerregular';
+    src: url('subwt___-webfont.woff2') format('woff2'),
+         url('subwt___-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+    body {
+        font-family: subway_tickerregular;
+    }
+
+    .tic-tac-toe-container {
+        width: 500px;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .tic-tac-toe-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        width: 100%;
+        height: 100%;
+        border: 2px solid black;
+    }
+
+    .tic-tac-toe-row {
+        display: contents;
+    }
+
+    .tic-tac-toe-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        position: relative;
+        background-color: black;
+        transition: all 0.5s ease-in;
+        z-index: 1;
+        font-size: 4em;
+        color: white;
+        border-image: linear-gradient(#000 0%, #fff 100%) 1;
+        border-width: 0 4px 1px 0;
+        border-style: solid;
+        padding: 5px;
+    }
+
+        .tic-tac-toe-cell .currentPlayerMark {
+            visibility: hidden;
+            transition: opacity 1s ease, visibility 1s ease;
+            opacity: 0;
+        }
+
+        .tic-tac-toe-cell:hover .currentPlayerMark {
+            opacity: 1;
+            visibility: visible;
+        }
+    .tic-tac-toe-cell:hover {
+
+    }
+    .clicked-tic-tac-toe-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        position: relative;
+        transition: 0.5s;
+        background-color: black;
+        font-size: 4em;
+        color: white;
+        text-shadow:
+        0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff;
+        border-image: linear-gradient(#000 0%, #fff 100%) 1;
+        border-width: 0 4px 1px 0;
+        border-style: solid;
+        padding: 5px;
+    }
+
+    .winner-tic-tac-toe-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        position: relative;
+        transition: 0.5s;
+        background-color: black;
+        font-size: 4em;
+        color: yellow;
+ text-shadow:       /* White glow */
+        0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
+        /* Yellow glow */
+        0 0 42px yellow, 0 0 82px yellow, 0 0 92px yellow, 0 0 102px yellow, 0 0 151px yellow;
+        border-image: linear-gradient(#000 0%, #fff 100%) 1;
+        border-width: 0 4px 1px 0;
+        border-style: solid;
+        padding: 5px;
+    }
+</style>

@@ -1,0 +1,53 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\obj\\Release\\net8.0-maccatalyst\\scopedcss\\bundle\\TicTacFoe.styles.css",
+      "PackagePath": "staticwebassets\\TicTacFoe.styles.css"
+    },
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\wwwroot\\subwt___-webfont.woff",
+      "PackagePath": "staticwebassets\\subwt___-webfont.woff"
+    },
+    {
+      "Id": "D:\\Portfolio\\TicTacFoe\\TicTacFoe\\wwwroot\\subwt___-webfont.woff2",
+      "PackagePath": "staticwebassets\\subwt___-webfont.woff2"
+    },
+    {
+      "Id": "obj\\Release\\net8.0-maccatalyst\\staticwebassets\\msbuild.TicTacFoe.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0-maccatalyst\\staticwebassets\\msbuild.build.TicTacFoe.props",
+      "PackagePath": "build\\TicTacFoe.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0-maccatalyst\\staticwebassets\\msbuild.buildMultiTargeting.TicTacFoe.props",
+      "PackagePath": "buildMultiTargeting\\TicTacFoe.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0-maccatalyst\\staticwebassets\\msbuild.buildTransitive.TicTacFoe.props",
+      "PackagePath": "buildTransitive\\TicTacFoe.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
